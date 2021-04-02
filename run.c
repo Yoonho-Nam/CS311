@@ -107,7 +107,7 @@ void process_instruction(){
             CURRENT_STATE.PC = (TARGET(instr_curr) << 2) | (CURRENT_STATE.PC & 0xf0000000);
             break;
 	    case 0x3:		//JAL
-            CURRENT_STATE.REGS[31] = CURRENT_STATE.PC + 4;
+            CURRENT_STATE.REGS[31] = CURRENT_STATE.PC;
             CURRENT_STATE.PC = (TARGET(instr_curr) << 2) | (CURRENT_STATE.PC & 0xf0000000);
             break;
 
