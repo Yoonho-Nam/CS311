@@ -18,13 +18,51 @@ int data_size;
 instruction parsing_instr(const char *buffer, const int index)
 {
     instruction instr;
-	/** Implement this function */
+	int value = fromBinary((char *)buffer);
+	instr.opcode = (short)((value >> 26) & 0x3f);
+	switch(instr.opcode) {
+	    //I format
+	    case 0x9:		//ADDIU
+	    case 0xc:		//ANDI
+	    case 0xf:		//LUI	
+	    case 0xd:		//ORI
+	    case 0xb:		//SLTIU
+	    case 0x23:		//LW	
+	    case 0x2b:		//SW
+	    case 0x4:		//BEQ
+	    case 0x5:		//BNE
+		instr.r_t.r_i.rs = (unsigned char)((value >> 21) & 0x1f);
+		instr.r_t.r_i.rt = (unsigned char)((value >> 16) & 0x1f);
+		instr.r_t.r_i.r_i.imm = (short)(value & 0xffff);
+		break;
+
+    	//R format
+	    case 0x0:		//ADDU, AND, NOR, OR, SLTU, SLL, SRL, SUBU if JR
+		instr.r_t.r_i.rs = (unsigned char)((value >> 21) & 0x1f);
+		instr.r_t.r_i.rt = (unsigned char)((value >> 16) & 0x1f);
+		instr.r_t.r_i.r_i.r.rd = (unsigned char)((value >> 11) & 0x1f);
+		instr.r_t.r_i.r_i.r.shamt = (unsigned char)((value >> 6) & 0x1f);
+		instr.func_code = (short)(value & 0x3f);
+		break;
+
+    	//J format
+	    case 0x2:		//J
+	    case 0x3:		//JAL		
+		instr.r_t.target = value & 0x3ffffff;
+		break;
+
+	    default:
+		printf("Not available instruction\n");
+		assert(0);
+	}
+	mem_write_32(MEM_TEXT_START + index, value);
     return instr;
 }
 
 void parsing_data(const char *buffer, const int index)
 {
-	/** Implement this function */
+	int value = fromBinary((char *)buffer);
+	mem_write_32(MEM_DATA_START + index, value);
 }
 
 void print_parse_result()
