@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Project 3. MIPS Pipelined Simulator
 Skeleton developed by CMU,
 modified for KAIST CS311 purpose by THKIM, BKKIM and SHJEON.
@@ -28,7 +27,3 @@ The `process_instruction()` function is used by the `cycle()` function to simula
 Each `cycle()` the pipeline will advance to the next instruction (if there are no stalls/hazards, etc.).
 Your internal register, memory, and pipeline register state should be updated according to the instruction
 that is being executed at each stage.
-=======
-# CS311
-[CS311 Computer Organization] Project
->>>>>>> bb13bfe41203ce02628fba842f9fb3742af4875f
